@@ -1,0 +1,15 @@
+node_modules
+.output
+.output-e2e
+.output-eval
+.wxt
+test-results
+playwright-report
+*.log
+.DS_Store
+.env*.local
+.eval-profile
+eval-results
+
+# Private notes, kept out of the public repo
+idea.md

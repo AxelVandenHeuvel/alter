@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>County Parks - Season Pass Application</title>
+<!-- A deliberately broken, early-2000s style form for trying Alter's screenshot feature.
+     Every section has a classic "can't see what I'm typing" problem. -->
+<style>
+  body { margin: 0; background: #d8dde6; font: 13px Verdana, Geneva, sans-serif; color: #222; }
+  #page { width: 760px; margin: 20px auto; background: #fff; border: 1px solid #8a94a6; }
+  #banner { background: #2f4f7f; color: #fff; padding: 10px 14px; font: bold 18px Georgia, serif; }
+  #content { padding: 14px 18px 24px; }
+  h2 { font: bold 14px Verdana, sans-serif; color: #2f4f7f; border-bottom: 1px solid #c5ccd8; padding-bottom: 3px; margin: 22px 0 10px; }
+  table.form td { padding: 4px 6px; vertical-align: top; }
+  table.form td.label { width: 150px; text-align: right; font-weight: bold; }
+
+  /* 1. Text box far too narrow for what people type. */
+  input.email { width: 90px; }
+
+  /* 2. Notice box with a fixed height that hides most of its text. */
+  .notice { height: 34px; overflow: hidden; background: #fff8d6; border: 1px solid #e0c96a; padding: 6px 8px; line-height: 17px; }
+
+  /* 3. Dropdown narrower than its options. */
+  select.park { width: 110px; }
+
+  /* 4. Comments box: tiny and can't scroll. */
+  textarea.comments { width: 180px; height: 36px; overflow: hidden; resize: none; }
+
+  /* 5. Summary table with fixed columns that cut values off. */
+  table.summary { border-collapse: collapse; table-layout: fixed; width: 420px; }
+  table.summary th, table.summary td { border: 1px solid #b7bfcc; padding: 4px 6px; width: 140px; white-space: nowrap; overflow: hidden; }
+  table.summary th { background: #eef1f6; text-align: left; }
+
+  /* 6. Submit button with a fixed width and a longer label. */
+  .submit { width: 96px; overflow: hidden; white-space: nowrap; padding: 4px 6px; }
+</style>
+</head>
+<body>
+<div id="page">
+  <div id="banner">County Parks &amp; Recreation</div>
+  <div id="content">
+    <p>Apply for a <b>2027 Season Pass</b>. All fields are required.</p>
+
+    <div class="notice" id="notice">
+      <b>Important:</b> Applications received after March 15 will be processed in the order received.
+      Passes are non-transferable and must be shown at the gate. Lost passes can be replaced once per season for a $5 fee.
+      Seniors (65+) and veterans qualify for a 50% discount; bring proof of eligibility to any parks office.
+    </div>
+
+    <h2>Your details</h2>
+    <table class="form">
+      <tr><td class="label">Full name</td><td><input type="text" size="12" name="name" value="Alexandra Van Den Berg-Whitfield"></td></tr>
+      <tr><td class="label">Email</td><td><input class="email" type="email" name="email" value="alexandra.vandenberg@example-company.com"></td></tr>
+      <tr><td class="label">Home park</td><td>
+        <select class="park" name="park">
+          <option>Choose a park...</option>
+          <option selected>Riverside Botanical Gardens and Nature Preserve</option>
+          <option>Lakeview Regional Park (North Entrance)</option>
+        </select>
+      </td></tr>
+      <tr><td class="label">Comments</td><td><textarea class="comments" name="comments">We usually visit on weekends with two kids and a dog. Is the north parking lot open in winter, and do dogs need a separate pass?</textarea></td></tr>
+    </table>
+
+    <h2>Pass summary</h2>
+    <table class="summary">
+      <tr><th>Pass type</th><th>Valid at</th><th>Price</th></tr>
+      <tr><td>Family Season Pass (2 adults, up to 4 children)</td><td>All county parks and recreation centers</td><td>$120.00 per season</td></tr>
+    </table>
+
+    <p><button class="submit" type="button">Submit Application Now</button></p>
+  </div>
+</div>
+</body>
+</html>

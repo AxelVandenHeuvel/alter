@@ -1,0 +1,59 @@
+{
+  "name": "alter-extension",
+  "description": "Customize any website by describing the change you want.",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "repository": "github:AxelVandenHeuvel/alter",
+  "homepage": "https://github.com/AxelVandenHeuvel/alter#readme",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12"
+  },
+  "scripts": {
+    "dev": "wxt",
+    "build": "wxt build",
+    "zip": "wxt zip",
+    "compile": "tsc --noEmit",
+    "test": "vitest run",
+    "test:e2e": "ALTER_E2E=1 wxt build && playwright test",
+    "postinstall": "wxt prepare",
+    "icons": "node scripts/generate-icons.mjs",
+    "lint": "eslint .",
+    "check": "tsc --noEmit && eslint . && vitest run",
+    "verify:reload": "node scripts/verify-reload.mjs",
+    "verify:chrome": "npm run build && npm run verify:widget && ALTER_E2E=1 wxt build && npm run verify:reload",
+    "verify:widget": "node scripts/verify-widget.mjs",
+    "demo": "node scripts/demo-server.mjs",
+    "eval": "ALTER_EVAL=1 wxt build && node --env-file-if-exists=.env.local scripts/eval/run.mjs",
+    "eval:login": "node scripts/eval/run.mjs --login"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.132.0",
+    "@fontsource-variable/inter": "^5.3.0",
+    "@mozilla/readability": "^0.6.0",
+    "acorn": "^8.19.0",
+    "acorn-walk": "^8.3.5",
+    "darkreader": "^4.9.133",
+    "idb-keyval": "^6.3.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.64.0",
+    "@types/chrome": "^0.3.4",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@wxt-dev/module-react": "^1.2.2",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "happy-dom": "^21.0.4",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.71.1",
+    "vitest": "^5.0.3",
+    "wxt": "^0.21.4"
+  }
+}
