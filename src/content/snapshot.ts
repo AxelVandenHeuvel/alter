@@ -1,5 +1,6 @@
 import {
   directText,
+  idOf,
   isHidden,
   isStableId,
   redact,
@@ -86,7 +87,7 @@ function isSignalElement(el: Element, text: string): boolean {
   return (
     SIGNAL_TAGS.has(el.tagName) ||
     el.tagName.includes('-') ||
-    (el.id !== '' && isStableId(el.id)) ||
+    isStableId(idOf(el)) ||
     el.hasAttribute('role') ||
     el.hasAttribute('aria-label') ||
     el.hasAttribute('data-testid') ||
@@ -128,7 +129,8 @@ class Builder {
     if (!isSignalElement(el, text) && !focus) return children;
 
     const tag = el.tagName.toLowerCase();
-    const id = el.id && isStableId(el.id) ? `#${el.id}` : '';
+    const elementId = idOf(el);
+    const id = isStableId(elementId) ? `#${elementId}` : '';
     const classes = stableClasses(el).map((c) => `.${c}`).join('');
     const attributes = describeAttributes(el);
     const shadow = el.shadowRoot ? ' [shadow-root]' : '';

@@ -2,7 +2,7 @@
   "name": "alter-extension",
   "description": "Customize any website by describing the change you want.",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
   "repository": "github:AxelVandenHeuvel/alter",
   "homepage": "https://github.com/AxelVandenHeuvel/alter#readme",

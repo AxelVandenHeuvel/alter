@@ -1,7 +1,7 @@
 import type { ElementSample, PageSummary, QueryResult, StylesResult } from '../lib/messages';
 import { extractArticle, extractRecipe } from './focus/extract';
 import { listPageData, summarizePageData } from './page-data';
-import { collapseWhitespace, isHidden, luminance, parseColor, redact, selectorHint, truncate } from './dom-utils';
+import { collapseWhitespace, isHidden, luminance, pageTitle, parseColor, redact, selectorHint, truncate } from './dom-utils';
 
 const MAX_SAMPLES = 5;
 const MAX_STYLE_ELEMENTS = 3;
@@ -111,7 +111,7 @@ export function pageSummary(doc: Document, alter: PageSummary['alter']): PageSum
   const metaScheme = doc.querySelector('meta[name="color-scheme"]')?.getAttribute('content') ?? '';
   return {
     url: doc.location.href,
-    title: doc.title,
+    title: pageTitle(doc),
     lang: doc.documentElement.lang,
     viewport: { width: win.innerWidth, height: win.innerHeight },
     documentHeight: doc.documentElement.scrollHeight,

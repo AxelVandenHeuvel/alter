@@ -19,6 +19,9 @@ export const SITE_HTML = `<!doctype html>
   <main>
     <section class="promo" data-testid="promo">Subscribe today and save 50%!</section>
     <article><h1>Calm Morning in the City</h1><p>The streets were quiet as the sun came up over the river.</p></article>
+    <!-- Fields named "id" take over their form's id property, as on many real sites. -->
+    <form class="signup" action="/subscribe"><input type="hidden" name="id" value="41"><input type="hidden" name="id" value="42"><button>Subscribe</button></form>
+    <form class="region" action="/region"><select name="id"><option>Europe</option><option>Asia</option></select></form>
   </main>
 </body></html>`;
 

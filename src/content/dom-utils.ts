@@ -39,6 +39,22 @@ export function isStableClass(name: string): boolean {
   return true;
 }
 
+/**
+ * An element's id. Read the attribute: on a form with a field named "id" (common, for a hidden
+ * record id), the `id` property is that field, or a list of them, not a string.
+ */
+export function idOf(el: Element): string {
+  return el.getAttribute('id') ?? '';
+}
+
+/**
+ * The page's title. An image or form named "title" takes over `document.title`, so fall back to
+ * the <title> element then.
+ */
+export function pageTitle(doc: Document): string {
+  return typeof doc.title === 'string' ? doc.title : collapseWhitespace(doc.querySelector('title')?.textContent ?? '');
+}
+
 export function isStableId(id: string): boolean {
   return id.length > 0 && id.length <= 40 && !/^\d/.test(id) && (id.match(/\d/g)?.length ?? 0) < 4 && !/[:]/.test(id);
 }
@@ -62,8 +78,9 @@ export function selectorHint(el: Element): string {
   let current: Element | null = el;
   while (current && parts.length < 3 && current !== current.ownerDocument.documentElement) {
     const tag = current.tagName.toLowerCase();
-    if (current.id && isStableId(current.id)) {
-      parts.unshift(`${tag}#${cssEscape(current.id)}`);
+    const id = idOf(current);
+    if (id && isStableId(id)) {
+      parts.unshift(`${tag}#${cssEscape(id)}`);
       break;
     }
     const classes = stableClasses(current, 2).map((c) => `.${cssEscape(c)}`).join('');

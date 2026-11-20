@@ -1,4 +1,5 @@
 import { isProbablyReaderable, Readability } from '@mozilla/readability';
+import { pageTitle } from '../dom-utils';
 
 /** The main article of a page, as found by Mozilla Readability (Firefox's Reader View). */
 export interface Article {
@@ -15,7 +16,7 @@ export function extractArticle(doc: Document): Article | null {
   const parsed = new Readability(doc.cloneNode(true) as Document, { charThreshold: 300 }).parse();
   if (!parsed?.content || !parsed.textContent?.trim()) return null;
   return {
-    title: parsed.title?.trim() || doc.title,
+    title: parsed.title?.trim() || pageTitle(doc),
     byline: parsed.byline?.trim() || null,
     siteName: parsed.siteName?.trim() || null,
     html: parsed.content,
@@ -160,7 +161,7 @@ export function extractRecipe(doc: Document): Recipe | null {
   const servings = asArray(node.recipeYield as unknown[]).map(text).filter(Boolean);
 
   return {
-    name: text(node.name) ?? doc.title,
+    name: text(node.name) ?? pageTitle(doc),
     description: text(node.description),
     image: imageUrl(node.image),
     author: authorName(node.author),
