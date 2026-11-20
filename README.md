@@ -1,7 +1,7 @@
 # Alter
 
 Describe how you want a website to look or read, and Alter changes it.
-Open Alter on any site, type "create a dark mode", "hide the Shorts", or "add a button that exports this table to CSV", and the change appears on the page as a live preview.
+Open Alter on any site, type "create a dark mode", "hide  reels/shorts", or "add a button that exports this table to CSV", and the change appears on the page as a live preview.
 Save it and it applies every time you visit that site.
 
 Changes are CSS, a built-in dark theme engine, and, for things CSS can't do, scripts that you review and approve before they run.
