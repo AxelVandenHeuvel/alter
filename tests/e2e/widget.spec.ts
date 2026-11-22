@@ -1,4 +1,4 @@
-import { expect, openFloatingPanel, pillBox, test } from './fixtures';
+import { expect, openFloatingPanel, pillBox, pillLook, test } from './fixtures';
 
 test('the floating panel sits over the page without moving it, and works end to end', async ({ site, serviceWorker }) => {
   const layout = () => site.evaluate(() => [document.documentElement.clientWidth, document.querySelector('main')!.getBoundingClientRect().left]);
@@ -86,4 +86,22 @@ test('Escape tucks the panel away, and it comes back as it was', async ({ site, 
 
   const again = await openFloatingPanel(site, serviceWorker);
   await expect(again.getByLabel('Describe a change')).toHaveValue('half-written idea');
+});
+
+test('the minimized button wears the look picked in Settings, and follows it when it changes', async ({ site, serviceWorker }) => {
+  const panel = await openFloatingPanel(site, serviceWorker);
+  await panel.getByRole('button', { name: 'Minimize' }).click();
+  await expect.poll(() => pillLook(site)).toBe('plain');
+
+  const pick = (look: string) =>
+    serviceWorker.evaluate(async (look) => {
+      const { settings } = await chrome.storage.local.get('settings');
+      await chrome.storage.local.set({ settings: { ...(settings as object), look } });
+    }, look);
+  await pick('selvedge');
+  await expect.poll(() => pillLook(site)).toBe('selvedge');
+  await pick('patchwork');
+  await expect.poll(() => pillLook(site)).toBe('patchwork');
+  await pick('plain');
+  await expect.poll(() => pillLook(site)).toBe('plain');
 });

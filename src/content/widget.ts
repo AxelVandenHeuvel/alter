@@ -1,4 +1,5 @@
 import { BRAND } from '../lib/brand';
+import { getSettings, SETTINGS_KEY, type Look } from '../lib/settings';
 
 /**
  * Alter's floating panel on the page. The panel UI itself is the extension page
@@ -72,6 +73,63 @@ iframe { display: block; width: 100%; height: 100%; border: 0; background: trans
   .pill:hover { background: #2a2a31; }
   .pill:focus-visible { outline-color: ${BRAND.accentOnDark}; }
 }
+
+/*
+ * The other looks (Settings > Look), matching the panel. Textures are gradients only: a page's
+ * content security policy can block data: images, and these styles live in the page.
+ */
+.card[data-look='patchwork'] { background: #2f5e4b; border-color: rgba(0, 0, 0, 0.25); }
+.card[data-look='selvedge'] { background: #0e1626; border-color: rgba(0, 0, 0, 0.4); }
+.pill[data-look]:focus-visible { outline: 0; box-shadow: 0 0 0 2px #fff, 0 0 0 4px #17171c; }
+
+/* Patchwork: a denim patch, sewn on with gold thread. */
+.pill[data-look='patchwork'] {
+  height: 40px;
+  padding: 0 17px 0 11px;
+  border: 0;
+  background:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 4px),
+    #3b5876;
+  color: #f5efe3;
+  font: 600 14px/1 'American Typewriter', 'Courier Prime', 'Courier New', monospace;
+  outline: 1.5px dashed #d9a441;
+  outline-offset: -5px;
+  box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2), 0 6px 18px rgba(16, 16, 24, 0.28);
+}
+.pill[data-look='patchwork']:hover { background-color: #45668a; }
+@media (prefers-color-scheme: dark) {
+  .card[data-look='patchwork'] { background: #1b3a2e; }
+  .pill[data-look='patchwork'] { background-color: #22344a; }
+  .pill[data-look='patchwork']:hover { background-color: #2b4160; }
+}
+
+/* Selvedge: a cognac leather patch with the name pressed in. */
+.pill[data-look='selvedge'] {
+  gap: 9px;
+  height: 40px;
+  padding: 0 16px 0 10px;
+  border: 0;
+  border-radius: 5px;
+  background:
+    radial-gradient(ellipse at 30% 15%, rgba(255, 230, 200, 0.12), transparent 65%),
+    repeating-linear-gradient(37deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
+    #6b4023;
+  color: #f3e2c4;
+  font: 700 12px/1 Rockwell, 'Roboto Slab', 'American Typewriter', Georgia, serif;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.45);
+  outline: 1px dashed rgba(243, 226, 196, 0.45);
+  outline-offset: -4px;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.25), 0 6px 18px rgba(0, 0, 0, 0.35);
+}
+.pill[data-look='selvedge']:hover { background-color: #7a4b2a; }
+/* Capitals trimmed to their own height, so they sit dead center. */
+.pill[data-look='selvedge'] span { text-box: trim-both cap alphabetic; }
+/* The safety pin is steel; brighten it on the dark leather and denim. */
+.pill[data-look='patchwork'] img,
+.pill[data-look='selvedge'] img { filter: brightness(1.7) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.45)); }
 `;
 
 export type WidgetState = 'closed' | 'open' | 'minimized';
@@ -142,6 +200,7 @@ export class Widget {
     this.host = this.card = this.frame = this.pill = null;
     this.stateValue = 'closed';
     removeEventListener('resize', this.onResize);
+    chrome.storage.onChanged.removeListener(this.onStorageChanged);
   }
 
   /** Hide the panel without closing it (its frame keeps running), e.g. while taking a screenshot. */
@@ -203,7 +262,22 @@ export class Widget {
     this.pill = pill;
     this.enableDragging(drag, card);
     addEventListener('resize', this.onResize);
+    this.applyLook((await getSettings()).look);
+    chrome.storage.onChanged.addListener(this.onStorageChanged);
   }
+
+  /** Dress the frame and the minimized button like the panel. Kept inside the closed shadow root, out of the page's sight. */
+  private applyLook(look: Look): void {
+    for (const el of [this.card, this.pill]) {
+      if (!el) continue;
+      if (look === 'plain') delete el.dataset.look;
+      else el.dataset.look = look;
+    }
+  }
+
+  private onStorageChanged = (changes: Record<string, chrome.storage.StorageChange>, area: string) => {
+    if (area === 'local' && changes[SETTINGS_KEY] && this.host) void getSettings().then((settings) => this.applyLook(settings.look));
+  };
 
   private onResize = () => this.place();
 

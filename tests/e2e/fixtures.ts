@@ -385,8 +385,8 @@ export async function openFloatingPanel(site: Page, serviceWorker: Worker) {
   return frame;
 }
 
-/** Where the minimized "Alter" button is on the page (it lives in a closed shadow root), or null. */
-export async function pillBox(page: Page): Promise<{ x: number; y: number; width: number; height: number } | null> {
+/** The minimized "Alter" button, found through its closed shadow root, or null when it isn't showing. */
+async function findPill(page: Page) {
   const cdp = await page.context().newCDPSession(page);
   const { root } = (await cdp.send('DOM.getDocument', { depth: -1, pierce: true })) as { root: DomNode };
   const find = (node: DomNode): DomNode | null => {
@@ -398,7 +398,21 @@ export async function pillBox(page: Page): Promise<{ x: number; y: number; width
     }
     return null;
   };
-  const pill = find(root);
+  return { cdp, pill: find(root) };
+}
+
+/** Which look the minimized button wears ("plain" when it has none), or null when it isn't showing. */
+export async function pillLook(page: Page): Promise<string | null> {
+  const { pill } = await findPill(page);
+  if (!pill) return null;
+  const attributes = pill.attributes ?? [];
+  const index = attributes.indexOf('data-look');
+  return index === -1 ? 'plain' : attributes[index + 1]!;
+}
+
+/** Where the minimized "Alter" button is on the page (it lives in a closed shadow root), or null. */
+export async function pillBox(page: Page): Promise<{ x: number; y: number; width: number; height: number } | null> {
+  const { cdp, pill } = await findPill(page);
   if (!pill) return null;
   const { model } = (await cdp.send('DOM.getBoxModel', { nodeId: pill.nodeId })) as { model: { border: number[] } };
   const [x1, y1, , , x3, y3] = model.border as [number, number, number, number, number, number];
