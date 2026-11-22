@@ -149,11 +149,12 @@ The script checker enforces the core of this independently: scripts that call `.
 ## Development
 
 To build it yourself: `npm install`, then `npm run build`, and load `.output/chrome-mv3` with **Load unpacked** as above.
-For hot reload, run `npm run dev` instead.
+For hot reload, run `npm run dev` instead, and load `.output/chrome-mv3-dev` once with **Load unpacked**.
+While it runs, every saved file rebuilds and reloads the extension.
 
 | Command | What it does |
 |---|---|
-| `npm run dev` | Chrome with the extension loaded and hot reload |
+| `npm run dev` | Builds `.output/chrome-mv3-dev` and rebuilds it on every save; load that folder once with **Load unpacked** |
 | `npm run check` | Type-check, lint, and unit tests |
 | `npm run test:e2e` | Builds an E2E variant and drives the real extension in Chromium with a scripted model |
 | `npm run build` / `npm run zip` | Production build / the zip attached to each release |
