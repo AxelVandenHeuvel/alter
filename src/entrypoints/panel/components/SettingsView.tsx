@@ -80,19 +80,6 @@ export function SettingsView({
             </div>
       </section>
 
-      <section className="settings-section">
-        <h3>Look</h3>
-        <div className="radio-list" role="radiogroup" aria-label="Look">
-          {LOOKS.map((look) => (
-            <label key={look.id} className={`radio ${settings.look === look.id ? 'selected' : ''}`}>
-              <input type="radio" name="look" checked={settings.look === look.id} onChange={() => void updateSettings({ look: look.id })} />
-              <span className="radio-label">{look.label}</span>
-              <span className="radio-hint">{look.hint}</span>
-            </label>
-          ))}
-        </div>
-      </section>
-
       <UsageSection limit={settings.monthlyLimit} />
 
       <section className="settings-section">
@@ -154,6 +141,18 @@ export function SettingsView({
       </section>
 
       <VersionSection update={update} />
+
+      <section className="settings-section">
+        <h3>Look</h3>
+        <div className="radio-list" role="radiogroup" aria-label="Look">
+          {LOOKS.map((look) => (
+            <label key={look.id} className={`radio ${settings.look === look.id ? 'selected' : ''}`}>
+              <input type="radio" name="look" checked={settings.look === look.id} onChange={() => void updateSettings({ look: look.id })} />
+              <span className="radio-label">{look.label}</span>
+            </label>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

@@ -10,9 +10,9 @@ export type ModelId = (typeof MODELS)[number]['id'];
 
 /** How the panel looks. Plain is the default; the others dress it in cloth. */
 export const LOOKS = [
-  { id: 'plain', label: 'Plain', hint: 'Black, white and gray' },
-  { id: 'patchwork', label: 'Patchwork', hint: 'Fabric scraps, stitched together' },
-  { id: 'selvedge', label: 'Selvedge', hint: 'Raw denim, leather and copper' },
+  { id: 'plain', label: 'Plain' },
+  { id: 'patchwork', label: 'Patchwork' },
+  { id: 'selvedge', label: 'Selvedge' },
 ] as const;
 
 export type Look = (typeof LOOKS)[number]['id'];
