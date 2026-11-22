@@ -285,3 +285,14 @@ test('⌘↵ saves the change being previewed', async ({ panel }) => {
   await expect(panel.getByTestId('saved-row')).toHaveCount(1);
   await expect(panel.getByTestId('proposal-card')).toContainText('Saved');
 });
+
+test("Markdown in Claude's reply shows as formatting, not symbols", async ({ panel }) => {
+  await ask(panel, 'options please');
+  const reply = panel.locator('.assistant-text').last();
+  await expect(reply.locator('strong').first()).toHaveText('Brighter:');
+  await expect(reply.locator('em')).toHaveText('fainter');
+  await expect(reply.locator('code')).toHaveText('#fff');
+  await expect(reply.locator('ul > li')).toHaveCount(2);
+  await expect(reply.locator('ol > li')).toHaveCount(2);
+  await expect(reply).not.toContainText('**');
+});

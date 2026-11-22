@@ -7,6 +7,7 @@ import { CodeBlock } from './CodeBlock';
 import { CompareButton } from './CompareButton';
 import { HealthLine } from './HealthLine';
 import { AlertIcon, BookIcon, CheckIcon, ChevronIcon, CodeIcon, ShieldIcon, ZapIcon } from './icons';
+import { InlineMarkdown } from './Markdown';
 import { ScriptSetup } from './ScriptSetup';
 
 const STATE_LABEL: Record<ProposalRecord['state'], string> = {
@@ -114,7 +115,9 @@ export function ProposalCard({
 
       {expanded && (
         <div className="proposal-details">
-          <p className="proposal-summary">{proposal.summary}</p>
+          <p className="proposal-summary">
+            <InlineMarkdown text={proposal.summary} />
+          </p>
           {/* A working preview needs no status line, only anything worth knowing about it. */}
           {state === 'preview' && !problem && health && health.details.length > 0 && (
             <div className="proposal-notes" data-testid="health-notes">

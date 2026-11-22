@@ -5,6 +5,7 @@ import { healthContext, type PageHealthState } from '../health';
 import { CodeBlock } from './CodeBlock';
 import { HealthLine } from './HealthLine';
 import { ChevronIcon, TrashIcon } from './icons';
+import { InlineMarkdown } from './Markdown';
 import { Toggle } from './Toggle';
 
 function rowStatus(
@@ -51,7 +52,9 @@ function SavedRow({
       </div>
       {open && (
         <div className="saved-detail">
-          <p>{patch.summary}</p>
+          <p>
+            <InlineMarkdown text={patch.summary} />
+          </p>
           {status && status.details.length > 0 && (
             <div className="saved-health-details">
               {status.details.map((line) => (

@@ -821,8 +821,49 @@ kbd {
   gap: 10px;
 }
 
-.assistant-text {
-  white-space: pre-wrap;
+/* Claude's replies, with their Markdown shown as formatting. */
+.markdown {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-wrap: anywhere;
+}
+
+.markdown ul,
+.markdown ol {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding-left: 18px;
+}
+
+.markdown ul {
+  list-style: disc;
+}
+
+.markdown ol {
+  list-style: decimal;
+}
+
+.markdown li::marker {
+  color: var(--text-faint);
+}
+
+.markdown-heading,
+.markdown strong,
+.proposal-summary strong,
+.saved-detail strong {
+  font-weight: 600;
+}
+
+.markdown code,
+.proposal-summary code,
+.saved-detail p code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--bg-muted);
+  font: 0.92em var(--mono);
 }
 
 .usage-line {

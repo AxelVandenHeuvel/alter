@@ -21,6 +21,7 @@ import type { ModelProvider, ModelSession, ToolCall, ToolSpec, TurnInput, TurnRe
  * - "per ounce ..."     a script that labels each product with its price per ounce
  * - "yen ..."           a script that converts each price to yen
  * - "keys ..."          a script that writes down every key pressed, with a plain listener (containment must stop it)
+ * - "options ..."       replies with choices in Markdown, without changing the page
  * - "this ..." with a selected area: hides the first element inside the selection
  * - anything else       makes the text bigger
  */
@@ -151,6 +152,11 @@ class FakeSession implements ModelSession {
     const call = (toolCall: ToolCall): TurnResult => ({ text: '', toolCalls: [toolCall], stopReason: 'tool_use', usage: FAKE_USAGE });
     const hideTarget = this.request.match(/hide (\w+)/)?.[1];
 
+    if (this.request.includes('options')) {
+      return reply(
+        'Which feel do you want?\n\n- **Brighter:** lighter gray text and *fainter* borders.\n- **Whiter:** panels turned pure `#fff`.\n\n1. Pick one\n2. Say the word',
+      );
+    }
     if (hideTarget && this.step === 1) {
       return call({ id, name: 'query_selector', input: { selector: `[data-testid="${hideTarget}"]` } });
     }

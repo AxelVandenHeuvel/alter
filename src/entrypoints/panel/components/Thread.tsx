@@ -4,6 +4,7 @@ import type { HealthStatus } from '../../../lib/health-status';
 import { modelName } from '../../../lib/settings';
 import type { Conversation, RunUsage } from '../conversations';
 import { AlertIcon } from './icons';
+import { Markdown } from './Markdown';
 import { CARD_CLOSED, ProposalCard, type CardView } from './ProposalCard';
 
 export function Thread({
@@ -75,7 +76,7 @@ export function Thread({
         const record = item.proposalId ? conversation.proposals[item.proposalId] : undefined;
         return (
           <div key={item.id} className="assistant">
-            {item.text && <p className="assistant-text">{item.text}</p>}
+            {item.text && <Markdown className="assistant-text" text={item.text} />}
             {record && card(record)}
             {item.usage && <UsageLine usage={item.usage} />}
           </div>
