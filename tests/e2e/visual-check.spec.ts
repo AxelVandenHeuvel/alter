@@ -4,7 +4,8 @@ test('a change that leaves text unreadable is caught and fixed before the reply'
   await site.goto('https://alter.test/dark');
   await ask(panel, 'light mode');
 
-  const reply = panel.getByText(/Light mode is on, and all text is readable/);
+  // The whole reply: the check's findings are a list under its first line.
+  const reply = panel.locator('.assistant-text').filter({ hasText: 'Light mode is on, and all text is readable' });
   await expect(reply).toBeVisible();
   // The careless first attempt left the headings and text light on white, and the search box dark.
   await expect(reply).toContainText('Text that is now hard to read (3 elements)');
@@ -30,7 +31,7 @@ test('text a change covers or makes invisible is reported, not skipped', async (
   await site.goto('https://alter.test/dark');
   await ask(panel, 'cover the results');
 
-  const reply = panel.getByText(/Text that was readable before your change can no longer be seen/);
+  const reply = panel.locator('.assistant-text').filter({ hasText: 'Text that was readable before your change can no longer be seen' });
   await expect(reply).toBeVisible();
   await expect(reply).toContainText('(4 elements)');
   await expect(reply).toContainText('main > h1 ("Search results"): now covered by body > main > div.composer');
