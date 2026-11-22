@@ -236,21 +236,6 @@ test('a deleted change can be brought back with Undo', async ({ panel, site }) =
   await expect.poll(() => promoDisplay(site)).toBe('none');
 });
 
-test('"Change this" starts a request about a saved change', async ({ panel }) => {
-  await ask(panel, 'hide promo');
-  await waitForIdle(panel);
-  await panel.getByRole('button', { name: 'Save for alter.test' }).click();
-  await panel.getByTestId('saved-row').getByRole('button', { name: 'Hide promo' }).click();
-  await panel.getByRole('button', { name: 'Change this' }).click();
-
-  const box = panel.getByLabel('Describe a change');
-  await expect(box).toHaveValue('Change “Hide promo”: ');
-  await expect(box).toBeFocused();
-  // Ready to keep typing at the end.
-  await panel.keyboard.type('a bit less');
-  await expect(box).toHaveValue('Change “Hide promo”: a bit less');
-});
-
 test('the up arrow brings back the last message', async ({ panel }) => {
   await ask(panel, 'hide promo');
   await waitForIdle(panel);

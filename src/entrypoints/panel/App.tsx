@@ -7,7 +7,7 @@ import { askPageIfPresent } from '../../lib/page-client';
 import { getApiKey } from '../../lib/secrets';
 import { getSettings, updateSettings } from '../../lib/settings';
 import { captureArea, type Attachment } from './attachments';
-import { Composer, type Draft } from './components/Composer';
+import { Composer } from './components/Composer';
 import { EmptyState } from './components/EmptyState';
 import { ArrowLeftIcon, CloseIcon, MinusIcon, PauseIcon, SettingsIcon } from './components/icons';
 import { Logo } from './components/Logo';
@@ -49,7 +49,6 @@ async function createProvider(): Promise<ModelProvider> {
 
 export function App() {
   const [view, setView] = useState<'chat' | 'settings'>('chat');
-  const [draft, setDraft] = useState<Draft | null>(null);
   const update = useAvailableUpdate();
   const tab = usePanelTab();
   const settings = useSettings();
@@ -188,7 +187,6 @@ export function App() {
           revisingId={previewRecord?.proposal.revises ?? null}
           health={health}
           scriptsAvailable={scriptsAvailable}
-          onRevise={(patch) => setDraft({ id: Date.now(), text: `Change “${patch.title}”: ` })}
         />
       )}
 
@@ -220,7 +218,6 @@ export function App() {
           <Composer
             placeholder={hasThread ? 'Ask for a tweak…' : 'Describe a change…'}
             running={conversation?.running ?? false}
-            draft={draft}
             lastMessage={lastMessage}
             onSend={send}
             onStop={() => key && conversations.stop(key)}

@@ -4,7 +4,7 @@ import { deletePatch, restorePatch, updatePatch, type Patch } from '../../../lib
 import { healthContext, type PageHealthState } from '../health';
 import { CodeBlock } from './CodeBlock';
 import { HealthLine } from './HealthLine';
-import { ChevronIcon, PencilIcon, TrashIcon } from './icons';
+import { ChevronIcon, TrashIcon } from './icons';
 import { Toggle } from './Toggle';
 
 function rowStatus(
@@ -27,12 +27,10 @@ function SavedRow({
   patch,
   status,
   onDelete,
-  onRevise,
 }: {
   patch: Patch;
   status: HealthStatus | null;
   onDelete: () => void;
-  onRevise: () => void;
 }) {
   const [open, setOpen] = useState(false);
   return (
@@ -67,9 +65,6 @@ function SavedRow({
           {patch.css.trim() && <CodeBlock code={patch.css} label="CSS" />}
           {patch.js.trim() && <CodeBlock code={patch.js} label="script" />}
           <div className="saved-actions">
-            <button className="button ghost small" type="button" onClick={onRevise}>
-              <PencilIcon size={12} /> Change this
-            </button>
             <button className="button ghost danger small" type="button" onClick={onDelete}>
               <TrashIcon size={12} /> Delete
             </button>
@@ -86,7 +81,6 @@ export function SavedList({
   revisingId,
   health,
   scriptsAvailable,
-  onRevise,
 }: {
   patches: Patch[];
   paused: boolean;
@@ -94,8 +88,6 @@ export function SavedList({
   revisingId: string | null;
   health: PageHealthState | null;
   scriptsAvailable: boolean | null;
-  /** Start a request to change a saved change. */
-  onRevise: (patch: Patch) => void;
 }) {
   const [open, setOpen] = useState(true);
   const [deleted, setDeleted] = useState<{ patch: Patch; index: number } | null>(null);
@@ -132,7 +124,6 @@ export function SavedList({
               patch={patch}
               status={rowStatus(patch, paused, revisingId, health, scriptsAvailable)}
               onDelete={() => remove(patch)}
-              onRevise={() => onRevise(patch)}
             />
           ))}
         </ul>

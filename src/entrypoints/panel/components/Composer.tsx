@@ -2,16 +2,9 @@ import { useEffect, useRef, useState, type ClipboardEvent, type KeyboardEvent } 
 import { imageFileToAttachment, MAX_ATTACHMENTS, type Attachment } from '../attachments';
 import { ArrowUpIcon, CloseIcon, CropIcon, StopIcon } from './icons';
 
-/** Text to put in the message box from elsewhere in the panel; a new id replaces what's there. */
-export interface Draft {
-  id: number;
-  text: string;
-}
-
 export function Composer({
   placeholder,
   running,
-  draft,
   lastMessage,
   onSend,
   onStop,
@@ -19,7 +12,6 @@ export function Composer({
 }: {
   placeholder: string;
   running: boolean;
-  draft: Draft | null;
   /** The user's previous message, brought back with the up arrow in an empty box. */
   lastMessage: string | null;
   onSend: (text: string, attachments: Attachment[]) => Promise<boolean>;
@@ -44,20 +36,6 @@ export function Composer({
     addEventListener('message', onMessage);
     return () => removeEventListener('message', onMessage);
   }, []);
-
-  // A new draft replaces the text (during render, so it shows without an extra pass)...
-  const [draftId, setDraftId] = useState<number | null>(null);
-  if (draft && draft.id !== draftId) {
-    setDraftId(draft.id);
-    setText(draft.text);
-  }
-  // ...and gets the cursor at its end, ready to finish the sentence.
-  useEffect(() => {
-    const el = area.current;
-    if (!draftId || !el) return;
-    el.focus();
-    el.setSelectionRange(el.value.length, el.value.length);
-  }, [draftId]);
 
   // Grow with the content up to the CSS max-height.
   useEffect(() => {
