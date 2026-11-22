@@ -1,7 +1,7 @@
 # Alter
 
 Describe how you want a website to look or read, and Alter changes it.
-Open Alter on any site, type "create a dark mode", "hide  reels/shorts", or "add a button that exports this table to CSV", and the change appears on the page as a live preview.
+Open Alter on any site, type "create a dark mode", "hide reels/shorts", or "add a button that exports this table to CSV", and the change appears on the page as a live preview.
 Save it and it applies every time you visit that site.
 
 Changes are CSS, a built-in dark theme engine, and, for things CSS can't do, scripts that you review and approve before they run.
@@ -39,11 +39,13 @@ Your saved changes and key are kept, since Chrome ties them to that folder.
   Click the title for the details: what the change does and its code.
   A preview that isn't working, or has nothing to change on the page, says so without opening it.
 - Press and hold the eye button on a preview to see the page without it, and let go to see the change again (mouse, touch, or hold Space).
-- Each saved change has **Change this**, which starts a request about it in the message box, and **Delete**, which offers **Undo** for a few seconds.
+- Open a saved change to see what it does and its code, or to **Delete** it, with **Undo** for a few seconds.
+  To adjust one, just ask in the message box.
 - ⌘↵ (Ctrl+↵) saves the change you're previewing, from anywhere in the panel.
 - In the message box, the up arrow brings back your last message; **Esc** tucks the panel away into the corner button, conversation intact.
 - The toolbar icon shows how many saved changes are on for the site you're on, so it's always clear when a site looks different because of Alter.
 - Settings lists every site you've changed, so you can clear one without visiting it, and shows the keyboard shortcut (changeable at `chrome://extensions/shortcuts`).
+- Alter itself comes in three looks, picked at the bottom of Settings: Plain (black and white), Patchwork (fabric scraps stitched together), and Selvedge (raw denim and leather).
 
 ## How it works
 
