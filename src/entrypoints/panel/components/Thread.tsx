@@ -3,7 +3,7 @@ import { formatCost } from '../../../agent/pricing';
 import type { HealthStatus } from '../../../lib/health-status';
 import { modelName } from '../../../lib/settings';
 import type { Conversation, RunUsage } from '../conversations';
-import { AlertIcon, SparkleIcon } from './icons';
+import { AlertIcon } from './icons';
 import { CARD_CLOSED, ProposalCard, type CardView } from './ProposalCard';
 
 export function Thread({
@@ -85,14 +85,10 @@ export function Thread({
       {/* While a card waits for approval, the card itself is the status. */}
       {running && liveRecord?.state !== 'review' && (
         <div className="working" data-testid="working">
-          <SparkleIcon size={14} className="spin-soft" />
-          <div className="working-text">
-            <span className="working-status">
-              {status}
-              <span className="ellipsis" />
-            </span>
-            {progress && <span className="working-progress">{progress}</span>}
-          </div>
+          <span className="working-status">{status}</span>
+          {progress && <span className="working-progress">{progress}</span>}
+          {/* A seam stitching itself, for the tailor Alter is named after. */}
+          <span className="stitch" aria-hidden="true" />
         </div>
       )}
       <div ref={end} />
