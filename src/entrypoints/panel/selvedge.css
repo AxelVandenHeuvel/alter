@@ -1,0 +1,392 @@
+/*
+ * Selvedge: the panel as a pair of raw selvedge jeans. It lies on raw indigo denim with slubby
+ * yarn and a right-hand twill; each part is a different wash, double topstitched in orange; the
+ * selvedge ID (a white edge with a red line) runs under the header and along the turned-up cuff
+ * above the message box; the name is on a leather patch; cards are riveted in copper; costs hang
+ * on kraft paper tags. Text that has to be read closely sits on pocketing cotton. Applies only
+ * when Settings > Look is Selvedge. Denim is dark whatever the system's color scheme, so there
+ * is one palette.
+ *
+ * Each part sets --fabric, --weave, --ink and --thread; the rules below turn them into the
+ * panel's usual tokens, so components need no changes.
+ */
+
+:root[data-look='selvedge'] {
+  --label-font: Rockwell, 'Roboto Slab', 'American Typewriter', Georgia, serif;
+
+  /* Cream ink, for every wash of denim. */
+  --ink: #f1ece1;
+  --ink-muted: rgba(241, 236, 225, 0.76);
+  --ink-faint: rgba(241, 236, 225, 0.52);
+  --thread: #d9893a;
+
+  /* Pocketing: the plain cotton inside the pockets, for text and code. */
+  --pocket: #efe9dc;
+  --pocket-ink: #22201c;
+  --pocket-ink-muted: #5f594f;
+  --pocket-ink-faint: #9a9385;
+
+  /* Vegetable-tanned leather, for the name and the main action. */
+  --leather: #c08a55;
+  --leather-ink: #2b1808;
+  --accent: var(--leather);
+  --accent-hover: #cc9862;
+  --on-accent: var(--leather-ink);
+  --spool: #d9893a;
+
+  /* Status colors that read on dark denim. Light surfaces put the usual ones back (below). */
+  --success: #8fe0a0;
+  --warning: #f5c76b;
+  --warning-soft: rgba(245, 199, 107, 0.16);
+  --danger: #ff9b8f;
+  --danger-soft: rgba(255, 120, 100, 0.16);
+
+  /* Uneven, nubby yarn: noise stretched along the weft, as light streaks. */
+  --slub: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='800' height='300'%3E%3Cfilter id='s'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.7' numOctaves='2' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.5 -0.22'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23s)'/%3E%3C/svg%3E");
+  /* Leather grain: fine, dark, irregular. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' seed='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.2 0 0 0 0 0.1 0 0 0 0 0.03 0 0 0 0.55 -0.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");
+  /* A right-hand twill: the diagonal of every pair of jeans. */
+  --twill:
+    repeating-linear-gradient(118deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(118deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 4px);
+  /* The selvedge ID: a white edge with a red line woven in, a few threads wide. */
+  --selvedge:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.07) 0 1px, transparent 1px 3px),
+    linear-gradient(#efe9dc 0 3px, #c1272d 3px 5px, #efe9dc 5px 8px);
+
+  color-scheme: dark;
+}
+
+:root[data-look='selvedge'] body {
+  background: var(--slub), var(--twill), #17253f;
+  color: var(--ink);
+}
+
+:root[data-look='selvedge'] .app {
+  gap: 6px;
+  padding: 6px;
+}
+
+/* Every panel and every pocket turns its ink into the panel's tokens. */
+:root[data-look='selvedge']
+  :is(.header, .banner, .saved, .main, .footer, .card, .bubble.user, .settings-section, .composer, .code, .input, .radio-list, .button.secondary, .code-copy, .usage-line) {
+  --text: var(--ink);
+  --text-muted: var(--ink-muted);
+  --text-faint: var(--ink-faint);
+  --accent-text: var(--ink);
+  --bg-subtle: color-mix(in srgb, var(--ink) 6%, transparent);
+  --bg-muted: color-mix(in srgb, var(--ink) 11%, transparent);
+  --border: color-mix(in srgb, var(--ink) 18%, transparent);
+  --border-strong: color-mix(in srgb, var(--ink) 28%, transparent);
+  --focus: color-mix(in srgb, var(--ink) 45%, transparent);
+  color: var(--text);
+}
+
+/*
+ * A panel of denim, double topstitched: the outline is the outer row, and the inner row is drawn
+ * 8px inside the edge. (Declared here, not on :root, so each panel's own thread color is used.)
+ */
+:root[data-look='selvedge'] :is(.header, .banner, .saved, .main, .footer, .card, .settings-section) {
+  --row: repeating-linear-gradient(90deg, var(--thread) 0 5px, transparent 5px 8px);
+  --col: repeating-linear-gradient(180deg, var(--thread) 0 5px, transparent 5px 8px);
+  --topstitch:
+    var(--row) left 8px top 8px / calc(100% - 16px) 1.5px no-repeat border-box,
+    var(--row) left 8px bottom 8px / calc(100% - 16px) 1.5px no-repeat border-box,
+    var(--col) left 8px top 8px / 1.5px calc(100% - 16px) no-repeat border-box,
+    var(--col) right 8px top 8px / 1.5px calc(100% - 16px) no-repeat border-box;
+  --bg: var(--fabric);
+  border: 0;
+  border-radius: 5px;
+  background: var(--topstitch), var(--slub), var(--weave, var(--twill)), var(--fabric);
+  outline: 1.5px dashed var(--thread);
+  outline-offset: -4px;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.3),
+    0 3px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Pocketing: plain, so text and code stay easy to read. */
+:root[data-look='selvedge'] :is(.composer, .code, .input, .radio-list, .button.secondary, .code-copy) {
+  --ink: var(--pocket-ink);
+  --ink-muted: var(--pocket-ink-muted);
+  --ink-faint: var(--pocket-ink-faint);
+  --bg: var(--pocket);
+  background: repeating-linear-gradient(118deg, rgba(0, 0, 0, 0.025) 0 1px, transparent 1px 3px), var(--pocket);
+}
+
+/* Light surfaces (pocketing, ecru, leather) take light form controls and status colors. */
+:root[data-look='selvedge']
+  :is(.composer, .code, .input, .radio-list, .button.secondary, .code-copy, .banner, .settings-section:nth-child(4n + 4), .version-section) {
+  --success: #1f7a3a;
+  --warning: #9a5a05;
+  --warning-soft: #f6ead2;
+  --danger: #b3261e;
+  --danger-soft: #f8dcd8;
+  color-scheme: light;
+}
+
+/* The safety pin is steel; brighten it so it shows on dark denim. */
+:root[data-look='selvedge'] .header .logo {
+  filter: brightness(1.7) drop-shadow(0 1px 1px rgba(0, 0, 0, 0.5));
+}
+
+/* Washes */
+
+/* A rinse, with the selvedge edge along its bottom. */
+:root[data-look='selvedge'] .header {
+  --fabric: #22365a;
+  position: relative;
+  height: 56px;
+  padding: 0 12px 8px 16px;
+  outline: 0;
+  /* One row of stitching, kept above the selvedge edge. */
+  background:
+    var(--row) left 4px top 4px / calc(100% - 8px) 1.5px no-repeat,
+    var(--row) left 4px bottom 12px / calc(100% - 8px) 1.5px no-repeat,
+    var(--col) left 4px top 4px / 1.5px calc(100% - 16px) no-repeat,
+    var(--col) right 4px top 4px / 1.5px calc(100% - 16px) no-repeat,
+    var(--slub),
+    var(--twill),
+    var(--fabric);
+}
+
+:root[data-look='selvedge'] .header::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0;
+  height: 8px;
+  border-radius: 0 0 5px 5px;
+  background: var(--selvedge);
+}
+
+/* A mid wash, faded from wear. */
+:root[data-look='selvedge'] .saved {
+  --fabric: #3a5680;
+}
+
+/* Raw, unwashed indigo. */
+:root[data-look='selvedge'] .main {
+  --fabric: #1b2a47;
+}
+
+/* Black denim, turned up at the cuff to show the selvedge. */
+:root[data-look='selvedge'] .footer {
+  --fabric: #222328;
+  position: relative;
+  padding: 20px 14px 14px;
+  outline: 0;
+  /* One row of stitching, kept below the cuff's selvedge edge. */
+  background:
+    var(--row) left 4px top 12px / calc(100% - 8px) 1.5px no-repeat,
+    var(--row) left 4px bottom 4px / calc(100% - 8px) 1.5px no-repeat,
+    var(--col) left 4px top 12px / 1.5px calc(100% - 16px) no-repeat,
+    var(--col) right 4px top 12px / 1.5px calc(100% - 16px) no-repeat,
+    var(--slub),
+    var(--twill),
+    var(--fabric);
+}
+
+:root[data-look='selvedge'] .footer::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 8px;
+  border-radius: 5px 5px 0 0;
+  background: var(--selvedge);
+}
+
+/* Stonewashed, with a copper rivet in each top corner. */
+:root[data-look='selvedge'] .card {
+  --fabric: #4a6890;
+  --rivet: radial-gradient(circle, #f6cf9e 0 1px, #c47a3c 1.6px 2.6px, #6e3d16 3px 3.4px, transparent 3.8px);
+  background:
+    var(--rivet) left 2px top 2px / 8px 8px no-repeat border-box,
+    var(--rivet) right 2px top 2px / 8px 8px no-repeat border-box,
+    var(--topstitch),
+    var(--slub),
+    var(--twill),
+    var(--fabric);
+}
+
+:root[data-look='selvedge'] .proposal {
+  padding: 14px 16px;
+}
+
+/* Ecru: undyed denim, for the paused banner. */
+:root[data-look='selvedge'] .banner {
+  --fabric: #e6dfcf;
+  --ink: #2a2621;
+  --ink-muted: #5f594f;
+  --thread: #c4702a;
+  padding: 12px 16px;
+  color: var(--ink);
+}
+
+/* Settings: each section a different wash, laid on the denim. */
+:root[data-look='selvedge'] .main:has(> .settings) {
+  border: 0;
+  background: none;
+  outline: 0;
+  box-shadow: none;
+}
+
+:root[data-look='selvedge'] .settings {
+  gap: 6px;
+  padding: 0;
+}
+
+:root[data-look='selvedge'] .settings-section {
+  padding: 18px 18px;
+}
+
+:root[data-look='selvedge'] .settings-section:nth-child(4n + 1) {
+  --fabric: #1d2d4a;
+}
+
+:root[data-look='selvedge'] .settings-section:nth-child(4n + 2) {
+  --fabric: #34507a;
+}
+
+:root[data-look='selvedge'] .settings-section:nth-child(4n + 3) {
+  --fabric: #232427;
+}
+
+:root[data-look='selvedge'] .settings-section:nth-child(4n + 4) {
+  --fabric: #e6dfcf;
+  --ink: #2a2621;
+  --ink-muted: #5f594f;
+  --ink-faint: #8d8678;
+  --thread: #c4702a;
+}
+
+/* The version, on the leather patch at the back of the waistband. */
+:root[data-look='selvedge'] .settings-section.version-section {
+  --fabric: var(--leather);
+  --weave: var(--grain);
+  --ink: var(--leather-ink);
+  --ink-muted: rgba(43, 24, 8, 0.78);
+  --ink-faint: rgba(43, 24, 8, 0.6);
+  --thread: #5e3a1a;
+  background: var(--topstitch), var(--grain), linear-gradient(160deg, rgba(255, 230, 190, 0.18), rgba(60, 30, 10, 0.18)), var(--fabric);
+}
+
+:root[data-look='selvedge'] .version-section h3 {
+  text-shadow: 0 1px 0 rgba(255, 225, 185, 0.4);
+}
+
+:root[data-look='selvedge'] .version-section::after {
+  content: 'Raw selvedge · 14.5 oz · Shrink to fit';
+  font: 10px/1.4 var(--label-font);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-shadow: 0 1px 0 rgba(255, 225, 185, 0.35);
+}
+
+/*
+ * The parts that scroll keep a hem inside their edge: both rows of stitching sit in it, and the
+ * content scrolls only inside it, so text never passes under the stitching.
+ */
+:root[data-look='selvedge'] :is(.main, .saved) {
+  border: 12px solid transparent;
+}
+
+:root[data-look='selvedge'] .saved-header {
+  padding: 0 4px;
+}
+
+:root[data-look='selvedge'] .saved-title {
+  padding-left: 4px;
+}
+
+:root[data-look='selvedge'] .saved-main {
+  padding-right: 4px;
+}
+
+:root[data-look='selvedge'] .thread {
+  padding: 6px 4px 10px;
+}
+
+:root[data-look='selvedge'] .empty {
+  padding: 12px 4px 2px;
+}
+
+/* Details */
+
+/* Labels stamped in a slab serif, like a mill's markings. */
+:root[data-look='selvedge'] :is(.header-name, .saved-header, .section-label, .settings-section h3, .empty h2) {
+  font-family: var(--label-font);
+  font-weight: 700;
+}
+
+/* The name, debossed on a leather patch. */
+:root[data-look='selvedge'] .header-name {
+  padding: 2px 9px;
+  border-radius: 3px;
+  background: var(--grain), linear-gradient(160deg, rgba(255, 230, 190, 0.2), rgba(60, 30, 10, 0.2)), var(--leather);
+  color: var(--leather-ink);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 rgba(255, 225, 185, 0.45);
+  outline: 1px dashed rgba(43, 24, 8, 0.55);
+  outline-offset: -3px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Your messages: a swatch of light-wash denim. */
+:root[data-look='selvedge'] .bubble.user {
+  --ink: #13203a;
+  border-radius: 4px;
+  padding: 9px 13px;
+  background: var(--slub), repeating-linear-gradient(118deg, rgba(0, 0, 0, 0.06) 0 1px, transparent 1px 3px), #9fb4cf;
+  outline: 1.5px dashed #c4702a;
+  outline-offset: -4px;
+}
+
+/* What a request cost, on a kraft paper hang tag. */
+:root[data-look='selvedge'] .usage-line {
+  --ink: #2a1d0e;
+  --ink-muted: rgba(42, 29, 14, 0.82);
+  align-self: flex-start;
+  padding: 1px 8px 1px 15px;
+  background: var(--grain), #c9a878;
+  color: var(--text-muted);
+  clip-path: polygon(7px 0, 100% 0, 100% 100%, 7px 100%, 0 50%);
+  mask: radial-gradient(circle at 7px 50%, #0000 1.6px, #000 2.2px);
+}
+
+/* The main action is a leather tag, stitched on. */
+:root[data-look='selvedge'] .button.primary:not(:disabled) {
+  background: var(--grain), linear-gradient(160deg, rgba(255, 230, 190, 0.2), rgba(60, 30, 10, 0.2)), var(--leather);
+  text-shadow: 0 1px 0 rgba(255, 225, 185, 0.4);
+  outline: 1px dashed rgba(43, 24, 8, 0.55);
+  outline-offset: -4px;
+}
+
+:root[data-look='selvedge'] .button.primary:not(:disabled):hover {
+  background: var(--grain), linear-gradient(160deg, rgba(255, 230, 190, 0.28), rgba(60, 30, 10, 0.12)), var(--leather);
+}
+
+:root[data-look='selvedge'] .button.primary:not(:disabled):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Switches end in a copper tack button. */
+:root[data-look='selvedge'] .switch-thumb,
+:root[data-look='selvedge'] .switch.on .switch-thumb {
+  background: radial-gradient(circle at 35% 30%, #f6cf9e, #c47a3c 55%, #7a4519);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
+}
+
+/* The seam Alter stitches while it works, in topstitching thread. */
+:root[data-look='selvedge'] .stitch {
+  background: var(--spool);
+}
+
+/* Cards that are no longer live fade, rather than changing their outline. */
+:root[data-look='selvedge'] :is(.proposal.state-discarded, .proposal.state-replaced, .proposal.state-declined) {
+  border: 0;
+  opacity: 0.65;
+}

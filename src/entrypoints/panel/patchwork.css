@@ -147,6 +147,8 @@
   --ink-muted: rgba(251, 239, 226, 0.8);
   --ink-faint: rgba(251, 239, 226, 0.6);
   --thread: #f4e2c4;
+  /* The message box's problems show on the corduroy, above the paper. */
+  --danger: #ffd9cf;
   padding: 12px 14px 14px;
 }
 

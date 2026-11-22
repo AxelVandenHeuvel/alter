@@ -1,6 +1,6 @@
 import { expect, test } from './fixtures';
 
-test('the panel is Plain until Patchwork is picked in Settings, and stays Patchwork when reopened', async ({ panel, openPanel }) => {
+test('the panel is Plain until another look is picked in Settings, and keeps it when reopened', async ({ panel, openPanel }) => {
   const html = panel.locator('html');
   await expect(html).toHaveAttribute('data-look', 'plain');
 
@@ -17,7 +17,13 @@ test('the panel is Plain until Patchwork is picked in Settings, and stays Patchw
   await expect(reopened.locator('html')).toHaveAttribute('data-look', 'patchwork');
 
   await reopened.getByRole('button', { name: 'Settings', exact: true }).click();
-  await reopened.getByRole('radiogroup', { name: 'Look' }).getByText('Plain').click();
+  const reopenedLooks = reopened.getByRole('radiogroup', { name: 'Look' });
+  // Selvedge: the name sits on a leather patch.
+  await reopenedLooks.getByText('Selvedge').click();
+  await expect(reopened.locator('html')).toHaveAttribute('data-look', 'selvedge');
+  await expect.poll(() => reopened.locator('.header-name').evaluate((el) => getComputedStyle(el).textTransform)).toBe('uppercase');
+
+  await reopenedLooks.getByText('Plain').click();
   await expect(reopened.locator('html')).toHaveAttribute('data-look', 'plain');
   await expect.poll(() => reopened.locator('.header').evaluate((el) => getComputedStyle(el).outlineStyle)).toBe('none');
 });

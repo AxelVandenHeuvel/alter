@@ -1,9 +1,10 @@
 import { DEFAULT_SETTINGS, LOOKS, type Look } from '../../lib/settings';
 
 /**
- * The panel's look is an attribute on <html> that patchwork.css keys off. Settings load
- * asynchronously, so the last look is also remembered in this page's localStorage and put back
- * before the first paint, so a Patchwork panel doesn't flash Plain while it opens.
+ * The panel's look is an attribute on <html> that the look stylesheets (patchwork.css,
+ * selvedge.css) key off. Settings load asynchronously, so the last look is also remembered in
+ * this page's localStorage and put back before the first paint, so a dressed-up panel doesn't
+ * flash Plain while it opens.
  */
 const REMEMBERED = 'alter-look';
 

@@ -5,6 +5,7 @@ import { App } from './App';
 import { restoreLook } from './look';
 import './styles.css';
 import './patchwork.css';
+import './selvedge.css';
 
 restoreLook();
 
