@@ -128,7 +128,6 @@
     linear-gradient(90deg, var(--check) 50%, transparent 50%) 0 0 / 14px 14px,
     linear-gradient(var(--check) 50%, transparent 50%) 0 0 / 14px 14px;
   --thread: #b8433a;
-  padding: 4px 0;
 }
 
 /* Linen: a loose, even weave in oatmeal. */
@@ -310,16 +309,34 @@
   font-size: 14px;
 }
 
+/*
+ * The parts that scroll keep a hem of fabric inside their edge: the stitches sit in it, and the
+ * content scrolls only inside it, so text never passes under the stitching. (A scroller clips its
+ * content at its border, and its background still shows through a transparent one.)
+ */
+:root[data-look='patchwork'] :is(.main, .saved) {
+  border: 8px solid transparent;
+}
+
 :root[data-look='patchwork'] .saved-header {
-  padding: 0 16px;
+  padding: 0 8px;
 }
 
 :root[data-look='patchwork'] .saved-title {
-  padding-left: 16px;
+  padding-left: 8px;
 }
 
 :root[data-look='patchwork'] .saved-main {
-  padding-right: 16px;
+  padding-right: 8px;
+}
+
+/* The hem already sets the content in from the edge. */
+:root[data-look='patchwork'] .thread {
+  padding: 10px 8px 14px;
+}
+
+:root[data-look='patchwork'] .empty {
+  padding: 16px 8px 6px;
 }
 
 /* Your messages: a swatch cut with pinking shears. */
@@ -406,6 +423,7 @@
 
 /* Settings lie straight on the mat: each section is already its own patch. */
 :root[data-look='patchwork'] .main:has(> .settings) {
+  border: 0;
   background: none;
   outline: 0;
   box-shadow: none;
