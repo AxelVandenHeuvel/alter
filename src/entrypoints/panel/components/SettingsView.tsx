@@ -3,7 +3,7 @@ import { formatCost } from '../../../agent/pricing';
 import { plural } from '../../../lib/format';
 import { deleteAllPatches, type SiteSummary } from '../../../lib/patches';
 import { clearApiKey, getApiKey } from '../../../lib/secrets';
-import { MODELS, updateSettings, type Settings } from '../../../lib/settings';
+import { LOOKS, MODELS, updateSettings, type Settings } from '../../../lib/settings';
 import { RELEASES_PAGE } from '../../../lib/updates';
 import { useSiteSummaries, useSpend, useToggleShortcut } from '../hooks';
 import { ApiKeyForm } from './ApiKeyForm';
@@ -80,6 +80,19 @@ export function SettingsView({
             </div>
       </section>
 
+      <section className="settings-section">
+        <h3>Look</h3>
+        <div className="radio-list" role="radiogroup" aria-label="Look">
+          {LOOKS.map((look) => (
+            <label key={look.id} className={`radio ${settings.look === look.id ? 'selected' : ''}`}>
+              <input type="radio" name="look" checked={settings.look === look.id} onChange={() => void updateSettings({ look: look.id })} />
+              <span className="radio-label">{look.label}</span>
+              <span className="radio-hint">{look.hint}</span>
+            </label>
+          ))}
+        </div>
+      </section>
+
       <UsageSection limit={settings.monthlyLimit} />
 
       <section className="settings-section">
@@ -148,7 +161,7 @@ export function SettingsView({
 /** The installed version, and where to get a newer one: copies installed from GitHub don't update themselves. */
 function VersionSection({ update }: { update: string | null }) {
   return (
-    <section className="settings-section" data-testid="version">
+    <section className="settings-section version-section" data-testid="version">
       <div className="setting-row">
         <div>
           <h3>Version {chrome.runtime.getManifest().version}</h3>

@@ -27,6 +27,7 @@ import {
   useUserScriptsAvailable,
   type ActiveTab,
 } from './hooks';
+import { applyLook } from './look';
 
 /** Running as the floating panel on a page (an iframe), rather than as a standalone page. */
 const EMBEDDED = new URLSearchParams(location.search).get('embedded') === '1';
@@ -52,6 +53,10 @@ export function App() {
   const update = useAvailableUpdate();
   const tab = usePanelTab();
   const settings = useSettings();
+  const look = settings?.look;
+  useEffect(() => {
+    if (look) applyLook(look);
+  }, [look]);
   const { hasKey, refresh: refreshKey } = useHasApiKey();
   const hostname = tab?.modifiable ? tab.hostname : null;
   const granted = useHostPermission(hostname);

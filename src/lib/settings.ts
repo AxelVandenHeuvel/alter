@@ -8,6 +8,14 @@ export const MODELS = [
 
 export type ModelId = (typeof MODELS)[number]['id'];
 
+/** How the panel looks. Plain is the default; Patchwork sews it together from fabric scraps. */
+export const LOOKS = [
+  { id: 'plain', label: 'Plain', hint: 'Black, white and gray' },
+  { id: 'patchwork', label: 'Patchwork', hint: 'Fabric scraps, stitched together' },
+] as const;
+
+export type Look = (typeof LOOKS)[number]['id'];
+
 /** A short name for a model that answered: "Sonnet 5.5" for Claude (with or without a date suffix), else as given. */
 export function modelName(model: string): string {
   const known = MODELS.find((m) => model === m.id || model.startsWith(`${m.id}-`));
@@ -20,12 +28,14 @@ export interface Settings {
   monthlyLimit: number | null;
   /** Global kill switch: when true, no saved patch renders on any site. */
   paused: boolean;
+  look: Look;
 }
 
 export const DEFAULT_SETTINGS: Settings = {
   model: 'claude-sonnet-5-5',
   monthlyLimit: null,
   paused: false,
+  look: 'plain',
 };
 
 export const SETTINGS_KEY = 'settings';
@@ -35,7 +45,8 @@ export async function getSettings(): Promise<Settings> {
   const stored = (result[SETTINGS_KEY] as Partial<Settings> | undefined) ?? {};
   // Only the settings Alter still has: an older version also stored a model on the user's computer.
   const { model = DEFAULT_SETTINGS.model, monthlyLimit = DEFAULT_SETTINGS.monthlyLimit, paused = DEFAULT_SETTINGS.paused } = stored;
-  return { model, monthlyLimit, paused };
+  const look = LOOKS.some((l) => l.id === stored.look) ? stored.look! : DEFAULT_SETTINGS.look;
+  return { model, monthlyLimit, paused, look };
 }
 
 export async function updateSettings(changes: Partial<Settings>): Promise<Settings> {

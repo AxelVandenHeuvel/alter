@@ -1,0 +1,416 @@
+/*
+ * Patchwork: the panel as a tailor's work. Each part is a scrap of a different fabric, stitched
+ * around its edge and laid on a cutting mat. Text sits on paper wherever it has to be read closely
+ * (the message box, code, inputs). Everything here applies only when Settings > Look is Patchwork;
+ * Plain (styles.css) is untouched.
+ *
+ * Each fabric sets the same few properties (--fabric, --weave, --ink, --thread), and the rules
+ * below turn them into the panel's usual tokens, so every component inside a patch picks up its
+ * colors without knowing about fabrics.
+ */
+
+:root[data-look='patchwork'] {
+  --label-font: 'American Typewriter', 'Courier Prime', 'Courier New', var(--mono);
+
+  /* The cutting mat everything is laid out on. */
+  --mat: #2f5e4b;
+  --mat-line: rgba(255, 255, 255, 0.08);
+  --mat-line-strong: rgba(255, 255, 255, 0.17);
+
+  /* Ink for light fabrics; dark fabrics bring their own. */
+  --ink: #2a2621;
+  --ink-muted: #675f55;
+  --ink-faint: #9b9286;
+
+  /* Pattern paper, for whatever has to be read closely. */
+  --paper: #fffdf6;
+  --paper-ink: #2a2621;
+  --paper-ink-muted: #675f55;
+  --paper-ink-faint: #a39a8c;
+
+  /* A woven clothing label: the main action on any patch. */
+  --accent: #23344d;
+  --accent-hover: #31476a;
+  --on-accent: #f6ecd6;
+  --spool: #b8433a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-look='patchwork'] {
+    --mat: #1b3a2e;
+    --mat-line: rgba(255, 255, 255, 0.05);
+    --mat-line-strong: rgba(255, 255, 255, 0.1);
+    --ink: #ece6dc;
+    --ink-muted: #b3aa9d;
+    --ink-faint: #7f7669;
+    --paper: #1d1c19;
+    --paper-ink: #ece6dc;
+    --paper-ink-muted: #b3aa9d;
+    --paper-ink-faint: #7f7669;
+    --accent: #ead9b4;
+    --accent-hover: #f5e7c8;
+    --on-accent: #23344d;
+    --spool: #e0705f;
+  }
+}
+
+/* The cutting mat: a fine grid, with a stronger line every fifth square. */
+:root[data-look='patchwork'] body {
+  background:
+    linear-gradient(var(--mat-line-strong) 1px, transparent 1px) -1px -1px / 60px 60px,
+    linear-gradient(90deg, var(--mat-line-strong) 1px, transparent 1px) -1px -1px / 60px 60px,
+    linear-gradient(var(--mat-line) 1px, transparent 1px) -1px -1px / 12px 12px,
+    linear-gradient(90deg, var(--mat-line) 1px, transparent 1px) -1px -1px / 12px 12px,
+    var(--mat);
+}
+
+:root[data-look='patchwork'] .app {
+  gap: 6px;
+  padding: 6px;
+}
+
+/* Every patch and every paper turns its ink into the panel's tokens. */
+:root[data-look='patchwork']
+  :is(.header, .banner, .saved, .main, .footer, .card, .bubble.user, .settings-section, .composer, .code, .input, .radio-list, .button.secondary, .code-copy, .usage-line) {
+  --text: var(--ink);
+  --text-muted: var(--ink-muted);
+  --text-faint: var(--ink-faint);
+  --accent-text: var(--ink);
+  --bg-subtle: color-mix(in srgb, var(--ink) 5%, transparent);
+  --bg-muted: color-mix(in srgb, var(--ink) 10%, transparent);
+  --border: color-mix(in srgb, var(--ink) 16%, transparent);
+  --border-strong: color-mix(in srgb, var(--ink) 26%, transparent);
+  color: var(--text);
+}
+
+/* A patch: a scrap of fabric, stitched around its edge, lying on the mat. */
+:root[data-look='patchwork'] :is(.header, .banner, .saved, .main, .footer, .card, .settings-section) {
+  --bg: var(--fabric);
+  border: 0;
+  border-radius: 5px;
+  background: var(--weave), var(--fabric);
+  outline: 1.5px dashed var(--thread);
+  outline-offset: -5px;
+  box-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.16);
+}
+
+/* Paper: plain, so text and code stay easy to read. */
+:root[data-look='patchwork'] :is(.composer, .code, .input, .radio-list, .button.secondary, .code-copy) {
+  --ink: var(--paper-ink);
+  --ink-muted: var(--paper-ink-muted);
+  --ink-faint: var(--paper-ink-faint);
+  --bg: var(--paper);
+  background: var(--paper);
+}
+
+/* Fabrics */
+
+/* Denim, sewn with the gold thread jeans use. */
+:root[data-look='patchwork'] .header {
+  --fabric: #3b5876;
+  --weave:
+    repeating-linear-gradient(135deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.08) 0 1px, transparent 1px 4px);
+  --ink: #f5efe3;
+  --ink-muted: rgba(245, 239, 227, 0.78);
+  --ink-faint: rgba(245, 239, 227, 0.55);
+  --thread: #d9a441;
+  padding: 0 12px 0 16px;
+}
+
+/* Red gingham. */
+:root[data-look='patchwork'] .saved {
+  --fabric: #fbf3ee;
+  --check: rgba(190, 60, 55, 0.12);
+  --weave:
+    linear-gradient(90deg, var(--check) 50%, transparent 50%) 0 0 / 14px 14px,
+    linear-gradient(var(--check) 50%, transparent 50%) 0 0 / 14px 14px;
+  --thread: #b8433a;
+  padding: 4px 0;
+}
+
+/* Linen: a loose, even weave in oatmeal. */
+:root[data-look='patchwork'] .main {
+  --fabric: #efe6d5;
+  --weave:
+    repeating-linear-gradient(0deg, rgba(110, 85, 50, 0.07) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(90deg, rgba(110, 85, 50, 0.05) 0 1px, transparent 1px 4px);
+  --thread: #8b6b47;
+}
+
+/* Rust corduroy: soft vertical ribs. */
+:root[data-look='patchwork'] .footer {
+  --fabric: #a4643a;
+  --weave: repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.09) 0 3px, rgba(0, 0, 0, 0.09) 3px 6px);
+  --ink: #fbefe2;
+  --ink-muted: rgba(251, 239, 226, 0.8);
+  --ink-faint: rgba(251, 239, 226, 0.6);
+  --thread: #f4e2c4;
+  padding: 12px 14px 14px;
+}
+
+/* Chambray with polka dots, for each change Alter proposes. */
+:root[data-look='patchwork'] .card {
+  --fabric: #f3f6fb;
+  --weave: radial-gradient(rgba(50, 80, 130, 0.13) 1.5px, transparent 2px) 0 0 / 12px 12px;
+  --thread: #3a5480;
+}
+
+/* Mustard wool, for the paused banner. */
+:root[data-look='patchwork'] .banner {
+  --fabric: #e3b04b;
+  --weave: repeating-linear-gradient(45deg, rgba(0, 0, 0, 0.05) 0 2px, transparent 2px 4px);
+  --ink: #3b2a0c;
+  --thread: #7a5212;
+  padding: 10px 16px;
+  color: var(--ink);
+}
+
+/* Settings: every section its own scrap. */
+:root[data-look='patchwork'] .settings {
+  gap: 6px;
+  padding: 8px;
+}
+
+/* Tartan. */
+:root[data-look='patchwork'] .settings-section:nth-child(4n + 1) {
+  --fabric: #f4efe4;
+  --weave:
+    repeating-linear-gradient(90deg, rgba(40, 90, 70, 0.1) 0 6px, transparent 6px 18px),
+    repeating-linear-gradient(0deg, rgba(150, 50, 40, 0.08) 0 6px, transparent 6px 18px);
+  --thread: #3f7a5f;
+}
+
+/* Tweed: a tight twill. */
+:root[data-look='patchwork'] .settings-section:nth-child(4n + 2) {
+  --fabric: #ece6dc;
+  --weave:
+    repeating-linear-gradient(45deg, rgba(70, 60, 50, 0.09) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(-45deg, rgba(70, 60, 50, 0.05) 0 1px, transparent 1px 4px);
+  --thread: #7b6a55;
+}
+
+/* Rose polka dots. */
+:root[data-look='patchwork'] .settings-section:nth-child(4n + 3) {
+  --fabric: #fbf0f2;
+  --weave: radial-gradient(rgba(180, 70, 100, 0.14) 2px, transparent 2.5px) 0 0 / 14px 14px;
+  --thread: #b5476a;
+}
+
+/* Blue gingham. */
+:root[data-look='patchwork'] .settings-section:nth-child(4n + 4) {
+  --fabric: #eef3f9;
+  --check: rgba(60, 100, 170, 0.11);
+  --weave:
+    linear-gradient(90deg, var(--check) 50%, transparent 50%) 0 0 / 14px 14px,
+    linear-gradient(var(--check) 50%, transparent 50%) 0 0 / 14px 14px;
+  --thread: #3e6aa8;
+}
+
+:root[data-look='patchwork'] .settings-section {
+  padding: 18px 18px;
+}
+
+/* The version, on a satin care label. */
+:root[data-look='patchwork'] .settings-section.version-section {
+  --fabric: #fbfaf7;
+  --weave: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.025) 0 1px, transparent 1px 3px);
+  --thread: #b9b2a6;
+}
+
+:root[data-look='patchwork'] .version-section::after {
+  content: 'Machine wash cold · Do not tumble dry · Made with care';
+  font: 10px/1.4 var(--label-font);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-look='patchwork'] .header {
+    --fabric: #22344a;
+  }
+
+  :root[data-look='patchwork'] .saved {
+    --fabric: #2b1f1e;
+    --check: rgba(220, 90, 80, 0.14);
+    --thread: #d9675c;
+  }
+
+  :root[data-look='patchwork'] .main {
+    --fabric: #26221d;
+    --weave:
+      repeating-linear-gradient(0deg, rgba(255, 240, 210, 0.04) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(90deg, rgba(255, 240, 210, 0.03) 0 1px, transparent 1px 4px);
+    --thread: #a98a63;
+  }
+
+  :root[data-look='patchwork'] .footer {
+    --fabric: #5a3520;
+  }
+
+  :root[data-look='patchwork'] .card {
+    --fabric: #1c2330;
+    --weave: radial-gradient(rgba(160, 190, 240, 0.11) 1.5px, transparent 2px) 0 0 / 12px 12px;
+    --thread: #7d9bd0;
+  }
+
+  :root[data-look='patchwork'] .banner {
+    --fabric: #5c4313;
+    --ink: #f6e3b8;
+    --thread: #d9a441;
+  }
+
+  :root[data-look='patchwork'] .settings-section:nth-child(4n + 1) {
+    --fabric: #1f2a24;
+    --weave:
+      repeating-linear-gradient(90deg, rgba(120, 200, 160, 0.07) 0 6px, transparent 6px 18px),
+      repeating-linear-gradient(0deg, rgba(230, 110, 90, 0.06) 0 6px, transparent 6px 18px);
+    --thread: #6fae8e;
+  }
+
+  :root[data-look='patchwork'] .settings-section:nth-child(4n + 2) {
+    --fabric: #29251f;
+    --weave:
+      repeating-linear-gradient(45deg, rgba(255, 240, 210, 0.06) 0 1px, transparent 1px 4px),
+      repeating-linear-gradient(-45deg, rgba(255, 240, 210, 0.03) 0 1px, transparent 1px 4px);
+    --thread: #a8957a;
+  }
+
+  :root[data-look='patchwork'] .settings-section:nth-child(4n + 3) {
+    --fabric: #2d1f24;
+    --weave: radial-gradient(rgba(240, 130, 160, 0.13) 2px, transparent 2.5px) 0 0 / 14px 14px;
+    --thread: #d77796;
+  }
+
+  :root[data-look='patchwork'] .settings-section:nth-child(4n + 4) {
+    --fabric: #1d2633;
+    --check: rgba(120, 160, 230, 0.1);
+    --thread: #6f97d2;
+  }
+
+  :root[data-look='patchwork'] .settings-section.version-section {
+    --fabric: #23221f;
+    --weave: repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.025) 0 1px, transparent 1px 3px);
+    --thread: #6b655b;
+  }
+}
+
+/* Details */
+
+/* Labels in typewriter, like a pattern's markings. */
+:root[data-look='patchwork'] :is(.header-name, .saved-header, .section-label, .settings-section h3, .empty h2) {
+  font-family: var(--label-font);
+  font-weight: 600;
+}
+
+:root[data-look='patchwork'] .header-name {
+  font-size: 14px;
+}
+
+:root[data-look='patchwork'] .saved-header {
+  padding: 0 16px;
+}
+
+:root[data-look='patchwork'] .saved-title {
+  padding-left: 16px;
+}
+
+:root[data-look='patchwork'] .saved-main {
+  padding-right: 16px;
+}
+
+/* Your messages: a swatch cut with pinking shears. */
+:root[data-look='patchwork'] .bubble.user {
+  --ink: #22301c;
+  --pink: 8px;
+  padding: 12px 13px;
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(45deg, rgba(60, 90, 50, 0.07) 0 1px, transparent 1px 4px),
+    #cfdcc0;
+  mask:
+    conic-gradient(from 135deg at top, #0000, #000 1deg 89deg, #0000 90deg) top / var(--pink) 51% repeat-x,
+    conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) bottom / var(--pink) 51% repeat-x;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root[data-look='patchwork'] .bubble.user {
+    --ink: #e3ecda;
+    background:
+      repeating-linear-gradient(45deg, rgba(200, 230, 190, 0.05) 0 1px, transparent 1px 4px),
+      #364430;
+  }
+}
+
+/* What a request cost, on a price tag. */
+:root[data-look='patchwork'] .usage-line {
+  --ink: var(--paper-ink);
+  --ink-muted: var(--paper-ink-muted);
+  --ink-faint: var(--paper-ink-faint);
+  align-self: flex-start;
+  padding: 1px 8px 1px 15px;
+  background: var(--paper);
+  color: var(--text-muted);
+  clip-path: polygon(7px 0, 100% 0, 100% 100%, 7px 100%, 0 50%);
+  mask: radial-gradient(circle at 7px 50%, #0000 1.6px, #000 2.2px);
+  filter: drop-shadow(0 1px 0 rgba(0, 0, 0, 0.12));
+}
+
+/* The main action is a woven label, stitched on. */
+:root[data-look='patchwork'] .button.primary:not(:disabled) {
+  outline: 1px dashed color-mix(in srgb, var(--on-accent) 55%, transparent);
+  outline-offset: -4px;
+}
+
+:root[data-look='patchwork'] .button.primary:not(:disabled):focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 1px;
+}
+
+/* Switches end in a sewing button. */
+:root[data-look='patchwork'] .switch-thumb {
+  --hole: rgba(70, 50, 25, 0.55);
+  background:
+    radial-gradient(circle at 36% 36%, var(--hole) 0.9px, transparent 1.3px),
+    radial-gradient(circle at 64% 36%, var(--hole) 0.9px, transparent 1.3px),
+    radial-gradient(circle at 36% 64%, var(--hole) 0.9px, transparent 1.3px),
+    radial-gradient(circle at 64% 64%, var(--hole) 0.9px, transparent 1.3px),
+    #ead9b4;
+  box-shadow:
+    inset 0 0 0 1px rgba(70, 50, 25, 0.3),
+    0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+:root[data-look='patchwork'] .switch.on .switch-thumb {
+  background:
+    radial-gradient(circle at 36% 36%, var(--hole) 0.9px, transparent 1.3px),
+    radial-gradient(circle at 64% 36%, var(--hole) 0.9px, transparent 1.3px),
+    radial-gradient(circle at 36% 64%, var(--hole) 0.9px, transparent 1.3px),
+    radial-gradient(circle at 64% 64%, var(--hole) 0.9px, transparent 1.3px),
+    #ead9b4;
+}
+
+/* The seam Alter stitches while it works, in red thread. */
+:root[data-look='patchwork'] .stitch {
+  background: var(--spool);
+}
+
+/* Cards that are no longer live fade, rather than changing their outline. */
+:root[data-look='patchwork'] :is(.proposal.state-discarded, .proposal.state-replaced, .proposal.state-declined) {
+  border: 0;
+  opacity: 0.7;
+}
+
+/* Settings lie straight on the mat: each section is already its own patch. */
+:root[data-look='patchwork'] .main:has(> .settings) {
+  background: none;
+  outline: 0;
+  box-shadow: none;
+}
+
+:root[data-look='patchwork'] .main:has(> .settings) .settings {
+  padding: 0;
+}
