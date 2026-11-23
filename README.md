@@ -4,8 +4,20 @@ Describe how you want a website to look or read, and Alter changes it.
 Open Alter on any site, type "create a dark mode", "hide reels/shorts", or "add a button that exports this table to CSV", and the change appears on the page as a live preview.
 Save it and it applies every time you visit that site.
 
+![Typing "give this a modern dark theme" into Alter on Hacker News turns the whole page dark, and the change is saved for the site](docs/demo/hacker-news-dark.gif)
+
 Changes are CSS, a built-in dark theme engine, and, for things CSS can't do, scripts that you review and approve before they run.
 Alter can also run one-time actions on the page you're on, like downloading a post as a text file.
+
+**Remove what you don't want.** "Hide the Most Read sidebar and let the stories use the full width" on Ars Technica:
+
+![Alter hides the Most Read column on Ars Technica, and the story list widens to fill the page](docs/demo/hide-sidebar.gif)
+
+**Take something with you.** "Download this article as a markdown file" on Wikipedia, after you approve the one-time script:
+
+![Alter writes a one-time script, asks to run it, and saves the Wikipedia article as Hacker_News.md](docs/demo/download-article.gif)
+
+The recordings are real runs with Claude Sonnet, with the wait while it works sped up.
 
 ## Install
 
